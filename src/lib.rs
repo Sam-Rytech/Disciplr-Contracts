@@ -208,6 +208,7 @@ impl DisciplrVault {
     }
 }
 
+<<<<<<< HEAD
 #[cfg(test)]
 mod test {
     use super::*;
@@ -408,11 +409,45 @@ mod tests {
         env.mock_all_auths();
 
         let contract_id = env.register(DisciplrVault, ());
-        let client      = DisciplrVaultClient::new(&env, &contract_id);
+        let client = DisciplrVaultClient::new(&env, &contract_id);
 
         let (creator, amount, start, _, hash, verifier, s_dest, f_dest) = make_vault_args(&env);
 
         // end == start — should panic once validation is added
         client.create_vault(&creator, &amount, &start, &start, &hash, &verifier, &s_dest, &f_dest);
+    }
+
+    // -----------------------------------------------------------------------
+    // Helpers (from branch test/create-vault-invalid-timestamps)
+    // -----------------------------------------------------------------------
+
+    /// Fixture addresses used across tests.
+    struct Actors {
+        creator: Address,
+        success_dest: Address,
+        failure_dest: Address,
+    }
+
+    /// Build a fresh Soroban test environment, register the contract, and return
+    /// the typed client together with pre-generated mock actor addresses.
+    fn setup() -> (Env, DisciplrVaultClient<'static>, Actors) {
+        let env = Env::default();
+        env.mock_all_auths();
+
+        let contract_id = env.register(DisciplrVault, ());
+        let client = DisciplrVaultClient::new(&env, &contract_id);
+
+        let actors = Actors {
+            creator: Address::generate(&env),
+            success_dest: Address::generate(&env),
+            failure_dest: Address::generate(&env),
+        };
+
+        (env, client, actors)
+    }
+
+    /// Return a deterministic 32-byte milestone hash for testing.
+    fn milestone_hash(env: &Env) -> BytesN<32> {
+        BytesN::from_array(env, &[0xabu8; 32])
     }
 }
