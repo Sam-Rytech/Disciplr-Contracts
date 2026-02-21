@@ -18,6 +18,10 @@ Single contract **disciplr-vault** with:
 
 This repo is a **basic version**: logic is stubbed and storage is not persisted. Use it as a starting point for full implementation (USDC token integration, persistence, timestamp checks, auth).
 
+## Documentation
+
+For detailed contract documentation, see [vesting.md](vesting.md).
+
 ## Tech stack
 
 - **Rust** (edition 2021)
